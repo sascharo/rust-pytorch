@@ -31,24 +31,6 @@ struct CommonArgs {
     len: usize,
 }
 
-// #[derive(Parser)]
-// struct Cpu {
-//     #[clap(short, long, default_value = "10_000")]
-//     len: usize,
-// }
-
-// #[derive(Parser)]
-// struct Gpu {
-//     #[clap(short, long, default_value = "10_000")]
-//     len: usize,
-// }
-
-// #[derive(Parser)]
-// struct Tgpu {
-//     #[clap(short, long, default_value = "10_000")]
-//     len: usize,
-// }
-
 #[derive(Parser)]
 enum Commands {
     Cpu(CommonArgs),
