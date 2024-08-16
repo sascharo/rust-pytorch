@@ -39,7 +39,7 @@
 //! 0.1.0
 
 use rayon::prelude::*;
-use tch::{Device, Kind, Tensor};
+use tch::{Device, Tensor};
 
 // Build a CPU load test function.
 pub fn cpu_load_test(len: usize) {
