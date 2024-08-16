@@ -1,0 +1,11 @@
+[package]
+name = "stress-test"
+version = "0.1.0"
+edition = "2021"
+homepage.workspace = true
+
+[dependencies]
+clap = { version = "4.5", features = ["cargo", "derive"] }
+numpy = "0.21"
+rayon = "1.10"
+tch = "0.17"

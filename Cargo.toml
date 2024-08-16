@@ -1,0 +1,14 @@
+[workspace]
+members = [
+    "stress-test"
+]
+default-members = [
+    "stress-test"
+]
+# exclude = []
+resolver = "2"
+
+[workspace.package]
+homepage = "https://www.linkedin.com/in/sascharobitzki/"
+
+[workspace.dependencies]
