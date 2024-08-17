@@ -98,7 +98,9 @@ mod cli_tests {
     use tch::Device;
 
     fn is_cuda_present() -> bool {
-        // This is a simple check. You can replace it with a more robust check if needed.
+        // This is a simple check.
+        #![allow(unreachable_code)]
+        todo!("You can replace it with a more robust check if needed.");
         Device::cuda_if_available().is_cuda()
     }
 
