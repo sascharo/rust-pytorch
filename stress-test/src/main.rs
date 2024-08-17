@@ -95,6 +95,12 @@ fn main() {
 #[cfg(test)]
 mod cli_tests {
     use assert_cmd::Command;
+    use tch::Device;
+
+    fn is_cuda_present() -> bool {
+        // This is a simple check. You can replace it with a more robust check if needed.
+        Device::cuda_if_available().is_cuda()
+    }
 
     #[test]
     fn test_cpu_command() {
@@ -113,14 +119,24 @@ mod cli_tests {
     }
 
     #[test]
+    #[ignore = "No CUDA device detected"]
     fn test_gpu_command() {
+        if !is_cuda_present() {
+            eprintln!("Skipping GPU test: No CUDA device detected.");
+            return;
+        }
         let mut cmd = Command::cargo_bin("stress-test").unwrap();
         cmd.arg("gpu").arg("--len").arg("1000");
         cmd.assert().success().stdout(predicates::str::contains("Running GPU stress test."));
     }
 
     #[test]
+    #[ignore = "No CUDA device detected"]
     fn test_tgpu_command() {
+        if !is_cuda_present() {
+            eprintln!("Skipping GPU test: No CUDA device detected.");
+            return;
+        }
         let mut cmd = Command::cargo_bin("stress-test").unwrap();
         cmd.arg("tgpu").arg("--len").arg("1000");
         cmd.assert()
