@@ -21,8 +21,8 @@ jobs:
 
     - name: Download and install libtorch
       run: |
-        wget https://download.pytorch.org/libtorch/cu124/libtorch-win-shared-with-deps-2.4.0%2Bcu124.zip
-        sudo unzip libtorch-shared-with-deps-latest.zip -d /usr/local
+        wget https://download.pytorch.org/libtorch/cu124/libtorch-shared-with-deps-2.4.0%2Bcu124.zip
+        sudo unzip libtorch-shared-with-deps-2.4.0%2Bcu124.zip -d /usr/local
         echo "/usr/local/libtorch/lib" | sudo tee /etc/ld.so.conf.d/libtorch.conf
         sudo ldconfig
 
