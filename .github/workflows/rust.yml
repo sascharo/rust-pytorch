@@ -22,6 +22,13 @@ jobs:
       with:
         targets: x86_64-unknown-linux-musl
 
+    - name: Download and install libtorch
+      run: |
+        wget https://download.pytorch.org/libtorch/cu124/libtorch-shared-with-deps-2.4.0%2Bcu124.zip
+        sudo unzip libtorch-shared-with-deps-2.4.0+cu124.zip -d /usr/local
+        echo "/usr/local/libtorch/lib" | sudo tee /etc/ld.so.conf.d/libtorch.conf
+        sudo ldconfig
+
     - name: Cache cargo registry
       uses: actions/cache@main
       with:
