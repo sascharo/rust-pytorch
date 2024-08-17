@@ -17,12 +17,8 @@ jobs:
     - uses: actions/checkout@main
 
     - name: Install dependencies and C++ libraries
-      run: sudo apt-get update && sudo apt-get install -y wget unzip libstdc++-dev
-
-    # - name: Install C++ libraries
-    #   run: sudo apt-get install -y libstdc++-10-dev
+      run: sudo apt-get update && sudo apt-get install -y wget unzip libstdc++-10-dev
     
-
     - name: Download and install libtorch
       run: |
         wget https://download.pytorch.org/libtorch/cu124/libtorch-shared-with-deps-2.4.0%2Bcu124.zip
