@@ -22,6 +22,10 @@ jobs:
       with:
         targets: x86_64-unknown-linux-musl
 
+    - name: Install C++ libraries
+      run: sudo apt-get install -y libstdc++-10-dev
+
+
     - name: Download and install libtorch
       run: |
         wget https://download.pytorch.org/libtorch/cu124/libtorch-shared-with-deps-2.4.0%2Bcu124.zip
