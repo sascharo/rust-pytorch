@@ -17,7 +17,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@main
 
-    - name: Set up Rust
+    - name: Install & set up Rust
       uses: dtolnay/rust-toolchain@stable
       with:
         targets: x86_64-unknown-linux-musl
@@ -46,6 +46,9 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-cargo-build-
 
+    - name: Build
+      run: cargo build --verbose
+
     # - name: Install dependent C++ libraries
     #   run: sudo apt-get update && sudo apt-get install -y wget unzip libstdc++-10-dev
     
@@ -72,3 +75,10 @@ jobs:
     #     LIBTORCH: /usr/local/libtorch
     #     LD_LIBRARY_PATH: /usr/local/libtorch/lib:$LD_LIBRARY_PATH
     #   run: cargo test --verbose
+
+  # stress-test:
+  #   runs-on: windows-latest
+
+  #   steps:
+  #   - name: Checkout code
+  #     uses: actions/checkout@main
