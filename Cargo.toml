@@ -1,3 +1,9 @@
+[workspace.package]
+version = "0.2.0"
+authors = ["Sascha"]
+description = "A stress test for PyTorch CPU and GPU"
+homepage = "https://github.com/sascharo/rust-pytorch"
+
 [workspace]
 members = [
     "stress-test"
@@ -7,8 +13,3 @@ default-members = [
 ]
 # exclude = []
 resolver = "2"
-
-[workspace.package]
-homepage = "https://www.linkedin.com/in/sascharobitzki/"
-
-[workspace.dependencies]

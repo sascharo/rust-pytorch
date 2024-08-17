@@ -21,7 +21,7 @@
 //! Sascha
 //!
 //! # Version
-//! 0.1.0
+//! 0.2.0
 
 use clap::Parser;
 
@@ -41,7 +41,7 @@ enum Commands {
 
 #[derive(Parser)]
 #[clap(
-    version = "0.1.0",
+    version = "0.2.0",
     author = "Sascha",
     about = "A stress test for PyTorch CPU and GPU. There are three subcommands: cpu, gpu, and tgpu. The tgpu subcommand uses rayon to send the load to the GPU."
 )]
@@ -56,26 +56,85 @@ fn main() {
     match args.command {
         Some(Commands::Cpu(common_args)) => {
             println!("Running CPU stress test.");
-
-            stress_test::cpu_load_test(common_args.len);
+            match stress_test::cpu_load_test(common_args.len) {
+                Ok(_) => println!("CPU stress test completed successfully."),
+                Err(e) => eprintln!("Error running CPU stress test: {}", e),
+            }
         }
         Some(Commands::Tcpu(common_args)) => {
             println!("Running GPU stress test with rayon.");
-
-            stress_test::cpu_load_test_rayon(common_args.len);
+            match stress_test::cpu_load_test_rayon(common_args.len) {
+                Ok(_) => println!("CPU stress test with rayon completed successfully."),
+                Err(e) => eprintln!("Error running CPU stress test with rayon: {}", e),
+            }
         }
         Some(Commands::Gpu(common_args)) => {
             println!("Running GPU stress test.");
-
-            stress_test::gpu_load_test(common_args.len);
+            match stress_test::gpu_load_test(common_args.len) {
+                Ok(_) => println!("GPU stress test completed successfully."),
+                Err(e) => eprintln!("Error running GPU stress test: {}", e),
+            }
         }
         Some(Commands::Tgpu(common_args)) => {
             println!("Running GPU stress test with rayon.");
-
-            stress_test::gpu_load_test_rayon(common_args.len);
+            match stress_test::gpu_load_test_rayon(common_args.len) {
+                Ok(_) => println!("GPU stress test with rayon completed successfully."),
+                Err(e) => eprintln!("Error running GPU stress test with rayon: {}", e),
+            }
         }
         None => {
             println!("No command specified.");
         }
     }
 }
+
+// --------------------------------------------------
+// Test functions
+// --------------------------------------------------
+
+#[cfg(test)]
+mod cli_tests {
+    use assert_cmd::Command;
+
+    #[test]
+    fn test_cpu_command() {
+        let mut cmd = Command::cargo_bin("stress-test").unwrap();
+        cmd.arg("cpu").arg("--len").arg("1000");
+        cmd.assert().success().stdout(predicates::str::contains("Running CPU stress test."));
+    }
+
+    #[test]
+    fn test_tcpu_command() {
+        let mut cmd = Command::cargo_bin("stress-test").unwrap();
+        cmd.arg("tcpu").arg("--len").arg("1000");
+        cmd.assert()
+            .success()
+            .stdout(predicates::str::contains("Running GPU stress test with rayon."));
+    }
+
+    #[test]
+    fn test_gpu_command() {
+        let mut cmd = Command::cargo_bin("stress-test").unwrap();
+        cmd.arg("gpu").arg("--len").arg("1000");
+        cmd.assert().success().stdout(predicates::str::contains("Running GPU stress test."));
+    }
+
+    #[test]
+    fn test_tgpu_command() {
+        let mut cmd = Command::cargo_bin("stress-test").unwrap();
+        cmd.arg("tgpu").arg("--len").arg("1000");
+        cmd.assert()
+            .success()
+            .stdout(predicates::str::contains("Running GPU stress test with rayon."));
+    }
+
+    #[test]
+    fn test_no_command() {
+        let mut cmd = Command::cargo_bin("stress-test").unwrap();
+        cmd.assert().success().stdout(predicates::str::contains("No command specified."));
+    }
+}
+
+// --------------------------------------------------
+// End of test functions
+// --------------------------------------------------
