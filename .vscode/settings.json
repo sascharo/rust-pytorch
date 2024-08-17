@@ -1,9 +1,0 @@
-{
-    "[rust]": {
-        "editor.defaultFormatter": "jinxdash.prettier-rust",
-        "editor.formatOnSave": true
-    },
-    "todo-tree.regex.regex": "((//|#|<!--|;|/\\\\*|^|^[ \\\\t]*(-|\\\\d+.))\\\\s*($TAGS)|^\\\\s*- \\\\[ \\\\]|(todo|unimplemented)!\\\\(.*\\\\))",
-    "rust-analyzer.hover.actions.references.enable": true,
-    "rust-analyzer.check.command": "clippy"
-}
