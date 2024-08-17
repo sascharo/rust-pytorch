@@ -17,7 +17,7 @@ jobs:
     - uses: actions/checkout@main
 
     - name: Install dependencies
-      run: sudo apt-get update && sudo apt-get install -y wget unzip
+      run: sudo apt-get update && sudo apt-get install -y wget unzip libstdc++-dev
 
     - name: Download and install libtorch
       run: |
@@ -26,15 +26,19 @@ jobs:
         echo "/usr/local/libtorch/lib" | sudo tee /etc/ld.so.conf.d/libtorch.conf
         sudo ldconfig
 
-    - name: Set LIBTORCH environment variable
-      run: echo "LIBTORCH=/usr/local/libtorch" >> $GITHUB_ENV
+    - name: Set environment variables
+      run: |
+        echo "LIBTORCH=/usr/local/libtorch" >> $GITHUB_ENV
+        echo "LD_LIBRARY_PATH=/usr/local/libtorch/lib:$LD_LIBRARY_PATH" >> $GITHUB_ENV
 
     - name: Build
       env:
         LIBTORCH: /usr/local/libtorch
+        LD_LIBRARY_PATH: /usr/local/libtorch/lib:$LD_LIBRARY_PATH
       run: cargo build --verbose
 
-    #- name: Run tests
-    #  env:
-    #    LIBTORCH: /usr/local/libtorch
-    #  run: cargo test --verbose
+    # - name: Run tests
+    #   env:
+    #     LIBTORCH: /usr/local/libtorch
+    #     LD_LIBRARY_PATH: /usr/local/libtorch/lib:$LD_LIBRARY_PATH
+    #   run: cargo test --verbose
