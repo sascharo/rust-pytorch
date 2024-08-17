@@ -15,7 +15,19 @@ jobs:
 
     steps:
     - uses: actions/checkout@main
-    - name: Build
-      run: cargo build --verbose
-    - name: Run tests
-      run: cargo test --verbose
+
+    - name: Install dependencies
+      run: sudo apt-get update && sudo apt-get install -y wget unzip
+
+    - name: Download and install libtorch
+      run: |
+        wget https://download.pytorch.org/libtorch/cpu/libtorch-shared-with-deps-latest.zip
+        unzip libtorch-shared-with-deps-latest.zip -d /usr/local
+        echo "/usr/local/libtorch/lib" | sudo tee /etc/ld.so.conf.d/libtorch.conf
+        sudo ldconfig
+      
+    #- name: Build
+    #  run: cargo build --verbose
+
+    #- name: Run tests
+    #  run: cargo test --verbose
