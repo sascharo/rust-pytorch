@@ -25,9 +25,16 @@ jobs:
         sudo unzip libtorch-shared-with-deps-latest.zip -d /usr/local
         echo "/usr/local/libtorch/lib" | sudo tee /etc/ld.so.conf.d/libtorch.conf
         sudo ldconfig
-      
+
+    - name: Set LIBTORCH environment variable
+      run: echo "LIBTORCH=/usr/local/libtorch" >> $GITHUB_ENV
+
     - name: Build
+      env:
+        LIBTORCH: /usr/local/libtorch
       run: cargo build --verbose
 
     #- name: Run tests
+    #  env:
+    #    LIBTORCH: /usr/local/libtorch
     #  run: cargo test --verbose
