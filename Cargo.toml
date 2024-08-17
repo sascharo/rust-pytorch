@@ -13,3 +13,20 @@ default-members = [
 ]
 # exclude = []
 resolver = "2"
+
+[profile.dev]
+opt-level = 0
+
+[profile.release]
+opt-level = 3
+
+[profile.release-lto]
+inherits = "release"
+lto = true
+
+[profile.size-optimized-aggressive]
+inherits = "release-lto"
+opt-level = "z"
+
+[profile.test]
+inherits = "release-lto"
