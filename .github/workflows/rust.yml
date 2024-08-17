@@ -25,7 +25,6 @@ jobs:
     - name: Install C++ libraries
       run: sudo apt-get install -y libstdc++-10-dev
 
-
     - name: Download and install libtorch
       run: |
         wget https://download.pytorch.org/libtorch/cu124/libtorch-shared-with-deps-2.4.0%2Bcu124.zip
@@ -38,31 +37,34 @@ jobs:
         echo "LIBTORCH=/usr/local/libtorch" >> $GITHUB_ENV
         echo "LD_LIBRARY_PATH=/usr/local/libtorch/lib:$LD_LIBRARY_PATH" >> $GITHUB_ENV
 
-    - name: Cache cargo registry
-      uses: actions/cache@main
-      with:
-        path: ~/.cargo/registry
-        key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-cargo-registry-
+    # - name: Cache cargo registry
+    #   uses: actions/cache@main
+    #   with:
+    #     path: ~/.cargo/registry
+    #     key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
+    #     restore-keys: |
+    #       ${{ runner.os }}-cargo-registry-
 
-    - name: Cache cargo index
-      uses: actions/cache@main
-      with:
-        path: ~/.cargo/git
-        key: ${{ runner.os }}-cargo-index-${{ hashFiles('**/Cargo.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-cargo-index-
+    # - name: Cache cargo index
+    #   uses: actions/cache@main
+    #   with:
+    #     path: ~/.cargo/git
+    #     key: ${{ runner.os }}-cargo-index-${{ hashFiles('**/Cargo.lock') }}
+    #     restore-keys: |
+    #       ${{ runner.os }}-cargo-index-
 
-    - name: Cache cargo build
-      uses: actions/cache@main
-      with:
-        path: target
-        key: ${{ runner.os }}-cargo-build-${{ hashFiles('**/Cargo.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-cargo-build-
+    # - name: Cache cargo build
+    #   uses: actions/cache@main
+    #   with:
+    #     path: target
+    #     key: ${{ runner.os }}-cargo-build-${{ hashFiles('**/Cargo.lock') }}
+    #     restore-keys: |
+    #       ${{ runner.os }}-cargo-build-
 
     - name: Build
+      env:
+        LIBTORCH: /usr/local/libtorch
+        LD_LIBRARY_PATH: /usr/local/libtorch/lib:$LD_LIBRARY_PATH
       run: cargo build --verbose
 
     # - name: Install dependent C++ libraries
