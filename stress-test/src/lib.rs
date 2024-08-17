@@ -129,6 +129,12 @@ pub fn gpu_load_test_rayon(len: usize) -> LoadTestResultType {
 mod tests {
     use super::*;
 
+    fn is_cuda_present() -> bool {
+        // This is a simple check.
+        // Can be replaced with a more robust check if needed.
+        Device::cuda_if_available().is_cuda()
+    }
+
     #[test]
     fn test_cpu_load_test() {
         let len = 1000;
@@ -168,6 +174,11 @@ mod tests {
 
     #[test]
     fn test_gpu_load_test() {
+        if !is_cuda_present() {
+            eprintln!("Skipping GPU test: No CUDA device detected.");
+            return;
+        }
+
         let len = 1000;
         let results = gpu_load_test(len).expect("Failed to run gpu_load_test");
 
@@ -183,6 +194,11 @@ mod tests {
 
     #[test]
     fn test_gpu_load_test_rayon() {
+        if !is_cuda_present() {
+            eprintln!("Skipping GPU test: No CUDA device detected.");
+            return;
+        }
+
         let len = 1000;
         let results = gpu_load_test_rayon(len).expect("Failed to run gpu_load_test_rayon");
 
