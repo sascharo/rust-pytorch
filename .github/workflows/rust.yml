@@ -61,11 +61,11 @@ jobs:
     #     restore-keys: |
     #       ${{ runner.os }}-cargo-build-
 
-    - name: Build
+    - name: Run tests
       # env:
       #   LIBTORCH: /usr/local/libtorch
       #   LD_LIBRARY_PATH: /usr/local/libtorch/lib:$LD_LIBRARY_PATH
-      run: cargo build --verbose
+      run: cargo test --verbose
 
     # - name: Run tests
     #   env:
