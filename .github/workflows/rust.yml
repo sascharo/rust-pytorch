@@ -18,12 +18,9 @@ jobs:
       uses: actions/checkout@main
 
     - name: Set up Rust
-      uses: actions-rs/toolchain@v1
+      uses: dtolnay/rust-toolchain@stable
       with:
-        profile: minimal
-        toolchain: stable
-        components: clippy
-        override: true
+        targets: x86_64-unknown-linux-musl
 
     - name: Cache cargo registry
       uses: actions/cache@main
