@@ -29,6 +29,11 @@ jobs:
         echo "/usr/local/libtorch/lib" | sudo tee /etc/ld.so.conf.d/libtorch.conf
         sudo ldconfig
 
+    - name: Set environment variables
+      run: |
+        echo "LIBTORCH=/usr/local/libtorch" >> $GITHUB_ENV
+        echo "LD_LIBRARY_PATH=/usr/local/libtorch/lib:$LD_LIBRARY_PATH" >> $GITHUB_ENV
+
     - name: Cache cargo registry
       uses: actions/cache@main
       with:
