@@ -19,3 +19,6 @@ cc = "1.0"
 
 [lib]
 crate-type = ["cdylib", "rlib"]
+
+# [features]
+# doc-tests = []

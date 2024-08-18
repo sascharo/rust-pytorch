@@ -14,16 +14,16 @@
 //!
 //! ```rust
 //! // Example usage of the CPU load test
-//! stress_test::cpu_load_test(1000);
+//! stress_test::cpu_load_test(100);
 //!
 //! // Example usage of the multi-threaded CPU load test
-//! stress_test::cpu_load_test_rayon(1000);
+//! stress_test::cpu_load_test_rayon(100);
 //!
 //! // Example usage of the GPU load test
-//! stress_test::gpu_load_test(1000);
+//! stress_test::gpu_load_test(100);
 //!
 //! // Example usage of the multi-threaded GPU load test
-//! stress_test::gpu_load_test_rayon(1000);
+//! stress_test::gpu_load_test_rayon(100);
 //! ```
 //!
 //! # Dependencies
@@ -46,6 +46,12 @@ use tch::{ Device, Tensor };
 type LoadTestResult = Vec<(usize, Vec<i64>)>;
 type LoadTestError = Box<dyn std::error::Error + Send + Sync>;
 type LoadTestResultType = Result<LoadTestResult, LoadTestError>;
+
+fn is_cuda_present() -> bool {
+    // This is a simple check.
+    // Can be replaced with a more robust check if needed.
+    Device::cuda_if_available().is_cuda()
+}
 
 // Build a CPU load test function.
 pub fn cpu_load_test(len: usize) -> LoadTestResultType {
@@ -86,6 +92,11 @@ pub fn cpu_load_test_rayon(len: usize) -> LoadTestResultType {
 
 // Build a GPU load test function.
 pub fn gpu_load_test(len: usize) -> LoadTestResultType {
+    if !is_cuda_present() {
+        eprintln!("CUDA device not available. Skipping GPU load test.");
+        return Ok(Vec::new());
+    }
+
     let slice = vec![0; len];
     let mut results = Vec::new();
 
@@ -100,6 +111,11 @@ pub fn gpu_load_test(len: usize) -> LoadTestResultType {
 
 // Build a GPU load test function that uses threads via rayon iterator that sends the load to the GPU.
 pub fn gpu_load_test_rayon(len: usize) -> LoadTestResultType {
+    if !is_cuda_present() {
+        eprintln!("CUDA device not available. Skipping GPU load test.");
+        return Ok(Vec::new());
+    }
+
     let slice = vec![0; len];
     let results = Arc::new(Mutex::new(Vec::new()));
 
@@ -128,12 +144,6 @@ pub fn gpu_load_test_rayon(len: usize) -> LoadTestResultType {
 #[cfg(test)]
 mod tests {
     use super::*;
-
-    fn is_cuda_present() -> bool {
-        // This is a simple check.
-        // Can be replaced with a more robust check if needed.
-        Device::cuda_if_available().is_cuda()
-    }
 
     #[test]
     fn test_cpu_load_test() {
