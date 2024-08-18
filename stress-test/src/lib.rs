@@ -14,16 +14,20 @@
 //!
 //! ```rust
 //! // Example usage of the CPU load test
-//! stress_test::cpu_load_test(100);
+//! let cpu_results = stress_test::cpu_load_test(100).expect("Failed to run cpu_load_test");
+//! println!("{:?}", cpu_results);
 //!
 //! // Example usage of the multi-threaded CPU load test
-//! stress_test::cpu_load_test_rayon(100);
+//! let cpu_rayon_results = stress_test::cpu_load_test_rayon(100).expect("Failed to run cpu_load_test_rayon");
+//! println!("{:?}", cpu_rayon_results);
 //!
 //! // Example usage of the GPU load test
-//! stress_test::gpu_load_test(100);
+//! let gpu_results = stress_test::gpu_load_test(100).expect("Failed to run gpu_load_test");
+//! println!("{:?}", gpu_results);
 //!
 //! // Example usage of the multi-threaded GPU load test
-//! stress_test::gpu_load_test_rayon(100);
+//! let gpu_rayon_results = stress_test::gpu_load_test_rayon(100).expect("Failed to run gpu_load_test_rayon");
+//! println!("{:?}", gpu_rayon_results);
 //! ```
 //!
 //! # Dependencies
@@ -42,13 +46,13 @@ use std::sync::{ Arc, Mutex };
 use rayon::prelude::*;
 use tch::{ Device, Tensor };
 
-// Type aliases for better readability
+// Type aliases for better readability.
 type LoadTestResult = Vec<(usize, Vec<i64>)>;
 type LoadTestError = Box<dyn std::error::Error + Send + Sync>;
 type LoadTestResultType = Result<LoadTestResult, LoadTestError>;
 
+// This is a simple check.
 fn is_cuda_present() -> bool {
-    // This is a simple check.
     // Can be replaced with a more robust check if needed.
     Device::cuda_if_available().is_cuda()
 }
@@ -147,7 +151,7 @@ mod tests {
 
     #[test]
     fn test_cpu_load_test() {
-        let len = 1000;
+        let len = 1_000;
         let results = cpu_load_test(len).expect("Failed to run cpu_load_test");
 
         // Check that the results contain the expected number of elements
@@ -162,7 +166,7 @@ mod tests {
 
     #[test]
     fn test_cpu_load_test_rayon() {
-        let len = 1000;
+        let len = 1_000;
         let results = cpu_load_test_rayon(len).expect("Failed to run cpu_load_test_rayon");
 
         // Check that the results contain the expected number of elements
@@ -182,7 +186,7 @@ mod tests {
             return;
         }
 
-        let len = 1000;
+        let len = 1_000;
         let results = gpu_load_test(len).expect("Failed to run gpu_load_test");
 
         // Check that the results contain the expected number of elements
@@ -202,7 +206,7 @@ mod tests {
             return;
         }
 
-        let len = 1000;
+        let len = 1_000;
         let results = gpu_load_test_rayon(len).expect("Failed to run gpu_load_test_rayon");
 
         // Check that the results contain the expected number of elements

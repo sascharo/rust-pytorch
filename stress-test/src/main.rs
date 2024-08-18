@@ -15,7 +15,13 @@
 //! cargo run -- tcpu --len 1000
 //! cargo run -- gpu --len 1000
 //! cargo run -- tgpu --len 1000
-//! ```
+//!
+//! # Dependencies
+//!
+//! This module depends on the following crates:
+//! - `clap`: For command-line argument parsing.
+//! - `assert_cmd`: For testing command-line applications.
+//! - `tch`: For working with tensors and PyTorch.
 //!
 //! # Author
 //! Sascha
