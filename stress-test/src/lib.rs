@@ -36,7 +36,7 @@
 //! Sascha
 //!
 //! # Version
-//! 0.2.0
+//! 0.2.1
 
 use std::sync::{ Arc, Mutex };
 use rayon::prelude::*;
@@ -160,13 +160,6 @@ mod tests {
 
         // Check that each element has the correct index and tensor size
         for (i, size) in results.iter().enumerate() {
-            // println!(
-            //     "Expected: ({}, {:?}), Actual: ({}, {:?})",
-            //     i + 1,
-            //     vec![len as i64],
-            //     size.0,
-            //     size.1
-            // );
             assert_eq!(i + 1, size.0);
             assert_eq!(size.1, vec![len as i64]);
         }
@@ -207,13 +200,6 @@ mod tests {
 
         // Check that each element has the correct index and tensor size
         for (i, size) in results.iter().enumerate() {
-            // println!(
-            //     "Expected: ({}, {:?}), Actual: ({}, {:?})",
-            //     i + 1,
-            //     vec![len as i64],
-            //     size.0,
-            //     size.1
-            // );
             assert_eq!(i + 1, size.0);
             assert_eq!(size.1, vec![len as i64]);
         }

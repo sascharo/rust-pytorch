@@ -21,7 +21,7 @@
 //! Sascha
 //!
 //! # Version
-//! 0.2.0
+//! 0.2.1
 
 use clap::Parser;
 
@@ -94,9 +94,17 @@ fn main() {
 
 #[cfg(test)]
 mod cli_tests {
-    //use super::*;
     use assert_cmd::Command;
+    use std::process::Command as StdCommand;
     use tch::Device;
+
+    fn _build_binary() {
+        let status = StdCommand::new("cargo")
+            .arg("build")
+            .status()
+            .expect("Failed to build the binary");
+        assert!(status.success(), "Build failed");
+    }
 
     fn is_cuda_present() -> bool {
         // This is a simple check.
@@ -121,7 +129,6 @@ mod cli_tests {
     }
 
     #[test]
-    //#[ignore = "No CUDA device detected"]
     fn test_gpu_command() {
         if !is_cuda_present() {
             eprintln!("Skipping GPU test: No CUDA device detected.");
@@ -133,7 +140,6 @@ mod cli_tests {
     }
 
     #[test]
-    //#[ignore = "No CUDA device detected"]
     fn test_tgpu_command() {
         if !is_cuda_present() {
             eprintln!("Skipping GPU test: No CUDA device detected.");

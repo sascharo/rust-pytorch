@@ -1,5 +1,5 @@
 [workspace.package]
-version = "0.2.0"
+version = "0.2.1"
 authors = ["Sascha"]
 description = "A stress test for PyTorch CPU and GPU"
 homepage = "https://github.com/sascharo/rust-pytorch"

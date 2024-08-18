@@ -1,3 +1,7 @@
+# Workflow: Rust CI
+# Description: This workflow runs builds and tests the project on every push.
+# Date: August 2024
+
 name: Rust
 
 on:
@@ -7,10 +11,12 @@ on:
     branches: [ "main" ]
 
 env:
+  RUST_CI_VERSION: 0.2.1
+  RUST_CI_AUTHOR: sascharo
   CARGO_TERM_COLOR: always
 
 jobs:
-  build-linux:
+  build-test-linux:
     runs-on: ubuntu-latest
 
     steps:
@@ -64,29 +70,32 @@ jobs:
       #   LD_LIBRARY_PATH: /usr/local/libtorch/lib:$LD_LIBRARY_PATH
       run: cargo build --verbose
 
-  test-linux:
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@main
-
-    - name: Install & set up Rust
-      uses: dtolnay/rust-toolchain@stable
-      with:
-        targets: x86_64-unknown-linux-musl
-
-    - name: Download and install libtorch
-      run: |
-        wget https://download.pytorch.org/libtorch/cu124/libtorch-cxx11-abi-shared-with-deps-2.4.0%2Bcu124.zip
-        sudo unzip libtorch-cxx11-abi-shared-with-deps-2.4.0+cu124.zip -d /usr/local
-        echo "/usr/local/libtorch/lib" | sudo tee /etc/ld.so.conf.d/libtorch.conf
-        sudo ldconfig
-
-    - name: Set environment variables
-      run: |
-        echo "LIBTORCH=/usr/local/libtorch" >> $GITHUB_ENV
-        echo "LD_LIBRARY_PATH=/usr/local/libtorch/lib:$LD_LIBRARY_PATH" >> $GITHUB_ENV
-
     - name: Run tests
       run: cargo test --verbose
+
+  # test-linux:
+  #   runs-on: ubuntu-latest
+
+  #   steps:
+  #   - name: Checkout code
+  #     uses: actions/checkout@main
+
+  #   - name: Install & set up Rust
+  #     uses: dtolnay/rust-toolchain@stable
+  #     with:
+  #       targets: x86_64-unknown-linux-musl
+
+  #   - name: Download and install libtorch
+  #     run: |
+  #       wget https://download.pytorch.org/libtorch/cu124/libtorch-cxx11-abi-shared-with-deps-2.4.0%2Bcu124.zip
+  #       sudo unzip libtorch-cxx11-abi-shared-with-deps-2.4.0+cu124.zip -d /usr/local
+  #       echo "/usr/local/libtorch/lib" | sudo tee /etc/ld.so.conf.d/libtorch.conf
+  #       sudo ldconfig
+
+  #   - name: Set environment variables
+  #     run: |
+  #       echo "LIBTORCH=/usr/local/libtorch" >> $GITHUB_ENV
+  #       echo "LD_LIBRARY_PATH=/usr/local/libtorch/lib:$LD_LIBRARY_PATH" >> $GITHUB_ENV
+
+  #   - name: Run tests
+  #     run: cargo test --verbose
